@@ -1,0 +1,71 @@
+
+
+.HomeContent{
+  height:stretch;
+  width:stretch;
+  display: inline-block;
+  max-height: 91vh;
+  min-width:400px;
+}
+.busImageContainer{
+    position: relative;
+    height:45vh;
+    text-align: center;
+    color: white;
+    width:100%;
+    
+}
+
+.busimage{
+  object-fit: cover;
+  height:45vh;
+  min-width:400px;
+  width:100%;
+  filter:brightness(.7);
+  box-shadow: 2px 2px 2px 2px grey;
+}
+
+.centeredCaption{
+    background-image:inherit;
+    background-image:brightness(.7);
+    position: absolute;
+    color:white;
+    font-size: 35px;
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 0 2px 0 black;
+    min-width:320px;
+}
+
+.centeredCaption a{
+  color:white;
+  text-decoration: none;
+}
+
+
+.Description{
+  padding-top:20px;
+  width:60%;
+  height:40vh;
+  margin-left:auto;
+  margin-right: auto;
+  margin-top:auto;
+  margin-bottom: auto;
+  text-align: center;
+  font-family: sans-serif;
+  color:#555F61;
+}
+
+.Description p{
+  padding-top:0px;
+  padding-bottom:0px;
+  margin-top:0px;
+  margin-bottom:0px;
+}
+
+.Description strong{
+  font-size: 20px;
+  font-weight: bold;
+}

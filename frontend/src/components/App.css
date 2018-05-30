@@ -1,3 +1,7 @@
+.hidden{
+  display: none;
+}
+
 .App {
   text-align: center;
   width: 100vw;
@@ -6,6 +10,34 @@
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 50px;
+}
+
+.home-icon{
+  height:15px;
+  width:15px;
+  margin-right:5px;
+  filter:brightness(100);
+}
+
+.upload-icon{
+  height:15px;
+  width:15px;
+  margin-right:5px;
+  filter:brightness(100);
+}
+
+.report-icon{
+  height:15px;
+  width:15px;
+  margin-right:5px;
+  filter:brightness(100);
+}
+
+.viz-icon{
+  height:15px;
+  width:15px;
+  margin-right:5px;
+  filter: brightness(100);
 }
 
 .OSU-logo {
@@ -35,7 +67,7 @@
   width:100vw;
   height:9vh;
   color: white;
-  
+  overflow: hidden;
 }
 .App-title{
   text-align: left;
@@ -50,6 +82,7 @@
 }
 .AllContent{
   height:91vh;
+  max-height:91vh;
   width:100vw;
   display: inline-flex;
 }
@@ -58,12 +91,14 @@
   width:15vw;
   min-width: 240px;
   height:91vh;
-  background-color: #f5f7f9;
+  max-height: 91vh;
+  background-color: #555;
+  overflow: auto;
 }
 
 .footer{
   color:white;
-  background-color: #222;
+  background-color: #555;
 }
 .nav{
   text-align: left;
@@ -73,12 +108,11 @@
   height:86vh;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.interfacePanel{
-  text-align: left;
-  margin-top:0px;
-  color:white;
-  width:100%;
+
+.NavElement{
+  display:inline;
 }
+
 .panelDef{
   padding: 10px 10px;
   text-align: center;
@@ -101,7 +135,7 @@ li a {
   display: block;
   padding: 8px 16px;
   text-decoration: none;
-  background-color: #666;
+  background-color: #555;
   border-bottom:solid 1px #999;
   color: white;
 }
@@ -117,12 +151,35 @@ li a:hover:not(.active) {
   text-decoration: none;
 }
 .contentPanel{
+  display: inline-flex;
   padding-top:0px;
   padding-bottom: 0px;
   text-align: left;
   width:85vw;
   height:91vh;
   background-color: white;
+  overflow: auto;
+}
+.TablaeuViz{
+  height:91vh;
+  max-height: 91vh;
+  width:stretch;
+}
+
+iframe{
+  height:91vh;
+  max-height: 91vh;
+  width:80vw;
+}
+.tableauPlaceholder{
+  height:91vh;
+  max-height: 91vh;
+  width:80vw;
+}
+.tableauViz{
+  max-height: 91vh;
+  height:91vh;
+  width:80vw;
 }
 
 @keyframes App-logo-spin {

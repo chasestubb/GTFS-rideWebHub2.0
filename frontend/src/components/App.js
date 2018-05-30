@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-//port logo from './logo.svg';
 import OSUlogo from './osu-logo-reversed-update.png';
-//import ODOTlogo from './ODOT20logo.jpg';
 import './App.css';
 import icon from './icon.png';
+import homeIcon from './icon-home.png';
+import vizIcon from './data-viz-icon.png';
+import uploadIcon from './upload-icon.png';
+import reportIcon from './reports-icon.png';
+import MyReport from './Tablaeu';
+import Home from './home';
 
 class App extends Component {
   constructor(props) {
@@ -13,7 +17,8 @@ class App extends Component {
       navHome: "active",
       navUpload: "nonactive",
       navNTD: "nonactive",
-      navViz: "nonactive"
+      navViz: "nonactive",
+      tablaeuViz:"hidden"
     }
   }
   
@@ -25,7 +30,7 @@ class App extends Component {
       navNTD:"nonactive",
       navViz:"nonactive"
     });
-    ReactDOM.render(<h1>Welcome to WebHub!</h1>, document.getElementById('contentPanel'));
+    ReactDOM.render(<Home/>, document.getElementById('contentPanel'));
   }
   about = (e) =>{
     this.setState({
@@ -49,18 +54,18 @@ class App extends Component {
     ReactDOM.render("upload", document.getElementById('contentPanel'));
   }
 
-  ntdReport = (e) => {
+  Report = (e) => {
     this.setState({
       navHome: "nonactive",
       navUpload:"nonactive",
       navabout:"nonactive",
       navNTD:"active",
-      navViz:"nonactive"
+      navViz:"nonactive",
     });
     ReactDOM.render("ntdReporting", document.getElementById('contentPanel'));
   }
 
-  mapViz = (e) => {
+  mapViz = (req,res) => {
     this.setState({
       navHome: "nonactive",
       navUpload:"nonactive",
@@ -68,7 +73,9 @@ class App extends Component {
       navNTD:"nonactive",
       navViz:"active"
     });
-    ReactDOM.render("viz", document.getElementById('contentPanel'));
+
+    ReactDOM.render(<MyReport/>, document.getElementById('contentPanel'));
+
   }
   render() {
     return (
@@ -77,28 +84,39 @@ class App extends Component {
           <div className="logos">
             <img src={OSUlogo} className="OSU-logo" alt="OSUlogo" />
           </div>
-          <img src={icon} className="ride-logo" alt="ridelogo" />
+          <a href="http://www.gtfs-ride.org/" target="#" ><img src={icon} className="ride-logo" alt="ridelogo" /></a>
           <div className="App-title">WebHub</div>
         </header>
         <div className="AllContent">
           <div className="leftVerticalBar">
             <div className="nav">
-                <div className="panelDef">Navigation</div>
                 <ul>
                   <li>
-                      <a  className={this.state.navHome} onClick={this.home} href="#home">Home</a>
+                    <a className={this.state.navHome} onClick={this.home} href="#Home">
+                      <div className="NavElement"><img src={homeIcon} className="home-icon" alt="homeicon" />Home</div>
+                    </a>
                   </li>
-                  <li><a  onClick={this.upload}  className={this.state.navUpload} href="#Upload">Upload</a></li>
-                  <li><a  onClick={this.ntdReport}  className={this.state.navNTD} href="#NTD">NTD Reporting</a></li>
-                  <li><a  onClick={this.mapViz}  className={this.state.navViz} href="#MapViz">Map Viz</a></li>
+                  <li>
+                    <a  onClick={this.upload}  className={this.state.navUpload} href="#Upload">
+                      <div className="NavElement"><img src={uploadIcon} className="upload-icon" alt="uploadicon" />Upload</div>
+                    </a>
+                  </li>
+                  <li>
+                    <a  onClick={this.Report} className={this.state.navNTD} href="#Reporting">
+                      <div className="NavElement"><img src={reportIcon} className="report-icon" alt="reporticon" />Reporting</div>
+                    </a>
+                  </li>
+                  <li>
+                    <a  onClick={this.mapViz}  className={this.state.navViz} href="#MapViz">
+                      <div className="NavElement"><img src={vizIcon} className="viz-icon" alt="vizicon" />Map Visualization</div>
+                    </a>
+                  </li>
                 </ul>
             </div>
             <div className="footer">&copy; Copyright Oregon State University 2018</div>
           </div>
           <div id="contentPanel" className="contentPanel">
-          
-             <h1>Welcome to WebHub!</h1>
-          
+            <Home/>
           </div>
         </div>
       </div>

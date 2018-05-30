@@ -1,9 +1,10 @@
 {
   "short_name": "React App",
   "name": "Create React App Sample",
+  "content_security_policy": "script-src * publicstatic.tableausoftware.com 'unsafe-inline' 'unsafe-eval' 'sha256-EAAl0DFQ+mvjomucyOsDAG3MfKWhbYP5TT5cHiDln6k='",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "favicon.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }
