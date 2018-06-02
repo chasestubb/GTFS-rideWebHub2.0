@@ -3,10 +3,12 @@ import React from 'react';
 class Tablaeu extends React.Component {
   constructor(props){
     super(props);
+    this.updateHandler  =   this.props.updateProc;
     this.state = {
     };
   }
   componentDidMount() {
+    this.updateHandler();
     var divElement = document.getElementById('viz1527626932858');                    
     var vizElement = divElement.getElementsByTagName('object')[0]; 
     vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';

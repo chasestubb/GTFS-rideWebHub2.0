@@ -5,11 +5,12 @@ import './home.css';
 class Home extends React.Component {
   constructor(props){
     super(props);
+    this.updateHandler  =   this.props.updateProc;
     this.state = {
     };
   }
   componentDidMount() {
-    
+    this.updateHandler();
   };
 
   componentWillUnmount() {

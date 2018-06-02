@@ -10,7 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
+    "firstline": "^2.0.2",
+    "fs": "0.0.1-security",
     "nodemon": "^1.17.5",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pg": "^7.4.3",
+    "pg-copy-streams": "^1.2.0"
   }
 }

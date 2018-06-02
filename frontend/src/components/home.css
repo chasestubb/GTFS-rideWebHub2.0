@@ -44,6 +44,10 @@
   text-decoration: none;
 }
 
+.centeredCaption:hover{
+  text-shadow: 0 5px 0 black;
+}
+
 
 .Description{
   padding-top:20px;

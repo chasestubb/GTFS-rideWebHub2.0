@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import OSUlogo from './osu-logo-reversed-update.png';
 import './App.css';
 import icon from './icon.png';
@@ -8,7 +7,10 @@ import vizIcon from './data-viz-icon.png';
 import uploadIcon from './upload-icon.png';
 import reportIcon from './reports-icon.png';
 import MyReport from './Tablaeu';
+import Upload from './UploadPanel';
 import Home from './home';
+import { Switch, Route,Link } from 'react-router-dom';
+import Tables from './tables';
 
 class App extends Component {
   constructor(props) {
@@ -30,8 +32,8 @@ class App extends Component {
       navNTD:"nonactive",
       navViz:"nonactive"
     });
-    ReactDOM.render(<Home/>, document.getElementById('contentPanel'));
   }
+  
   about = (e) =>{
     this.setState({
       navHome: "nonactive",
@@ -39,8 +41,7 @@ class App extends Component {
       navabout:"active",
       navNTD:"nonactive",
       navViz:"nonactive"
-    });
-    ReactDOM.render("about", document.getElementById('contentPanel'));
+    }); 
   }
 
   upload = (e) =>{
@@ -50,8 +51,7 @@ class App extends Component {
       navabout:"nonactive",
       navNTD:"nonactive",
       navViz:"nonactive"
-    });
-    ReactDOM.render("upload", document.getElementById('contentPanel'));
+    }); 
   }
 
   Report = (e) => {
@@ -61,8 +61,7 @@ class App extends Component {
       navabout:"nonactive",
       navNTD:"active",
       navViz:"nonactive",
-    });
-    ReactDOM.render("ntdReporting", document.getElementById('contentPanel'));
+    }); 
   }
 
   mapViz = (req,res) => {
@@ -73,9 +72,6 @@ class App extends Component {
       navNTD:"nonactive",
       navViz:"active"
     });
-
-    ReactDOM.render(<MyReport/>, document.getElementById('contentPanel'));
-
   }
   render() {
     return (
@@ -84,7 +80,7 @@ class App extends Component {
           <div className="logos">
             <img src={OSUlogo} className="OSU-logo" alt="OSUlogo" />
           </div>
-          <a href="http://www.gtfs-ride.org/" target="#" ><img src={icon} className="ride-logo" alt="ridelogo" /></a>
+          <a href="http://localhost:3000/"><img src={icon} className="ride-logo" alt="ridelogo" /></a>
           <div className="App-title">WebHub</div>
         </header>
         <div className="AllContent">
@@ -92,31 +88,36 @@ class App extends Component {
             <div className="nav">
                 <ul>
                   <li>
-                    <a className={this.state.navHome} onClick={this.home} href="#Home">
+                    <Link  className={this.state.navHome} to='/'>
                       <div className="NavElement"><img src={homeIcon} className="home-icon" alt="homeicon" />Home</div>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a  onClick={this.upload}  className={this.state.navUpload} href="#Upload">
+                    <Link className={this.state.navUpload} to='/Upload'>
                       <div className="NavElement"><img src={uploadIcon} className="upload-icon" alt="uploadicon" />Upload</div>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a  onClick={this.Report} className={this.state.navNTD} href="#Reporting">
+                    <Link className={this.state.navNTD} to='/Reporting'>
                       <div className="NavElement"><img src={reportIcon} className="report-icon" alt="reporticon" />Reporting</div>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a  onClick={this.mapViz}  className={this.state.navViz} href="#MapViz">
+                    <Link className={this.state.navViz} to='/MapViz'>
                       <div className="NavElement"><img src={vizIcon} className="viz-icon" alt="vizicon" />Map Visualization</div>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
             </div>
             <div className="footer">&copy; Copyright Oregon State University 2018</div>
           </div>
           <div id="contentPanel" className="contentPanel">
-            <Home/>
+          <Switch>
+            <Route exact path='/'  render={()=>(<Home updateProc={this.home}/>)}/>
+            <Route exact path='/Upload'  render={()=>(<Upload updateProc={this.upload}/>)}/>
+            <Route exact path='/MapViz' render={()=>(<MyReport updateProc={this.mapViz}/>)}/>
+            <Route exact path='/Reporting' render={()=>(<Tables updateProc={this.Report}/>)}/>
+          </Switch>
           </div>
         </div>
       </div>

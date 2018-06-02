@@ -1,7 +1,108 @@
 <!DOCTYPE html>
 <html>
+  <head>
+      <link rel="shortcut icon" href="./favicon.png">
+      <link rel="stylesheet" href="./css/style.css">
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+      <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+      <script src="./js/controller.js"></script>
+  </head>
+  <title>WebHub</title>
 <body>
-
-  <div class='tableauPlaceholder' id='viz1527626876827' style='position: relative'><noscript><a href='#'><img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Z2&#47;Z23PJSCDY&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='path' value='shared&#47;Z23PJSCDY' /> <param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Z2&#47;Z23PJSCDY&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1527626876827');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+    <div class="App">
+        <header class="App-header">
+          <div class="logos">
+            <img src="./img/osu-logo-reversed-update.png" class="OSU-logo" alt="OSUlogo" />
+          </div>
+          <a href="http://localhost:3000/"><img src="./img/icon.png" class="ride-logo" alt="ridelogo" /></a>
+          <div class="App-title">WebHub</div>
+        </header>
+        <div class="AllContent">
+            <div class="leftVerticalBar">
+                <div class="nav">
+                    <ul>
+                      <li>
+                        <a href="http://localhost:3000/">
+                          <div class="NavElement"><img src="./img/icon-home.png" class="home-icon" alt="homeicon" />Home</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="active" href="#Upload">
+                          <div class="NavElement"><img src="./img/upload-icon.png" class="upload-icon" alt="uploadicon" />Upload</div>
+                        </a>
+                      </li>
+                      <li class="SubNavElement">
+                          <a onClick="showHistory()" href="#UploadHistory">
+                            <div >History</div>
+                          </a>
+                      </li>
+                      <li class="SubNavElement">
+                          <a onClick="showLoader()" href="#UploadLoad">
+                            <div >Load Saved Feed</div>
+                          </a>
+                      </li>
+                      <li class="SubNavElement">
+                          <a  onClick="showImport()" href="#DBLoad">
+                            <div >Import new into DB</div>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="http://localhost:3000/Reporting">
+                            <div class="NavElement"><img src="./img/reports-icon.png" class="report-icon" alt="reporticon" />Reporting</div>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="http://localhost:3000/MapViz">
+                            <div class="NavElement"><img src="./img/data-viz-icon.png" class="viz-icon" alt="vizicon" />Map Visualization</div>
+                          </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer">&copy; Copyright Oregon State University 2018</div>
+            </div>
+            <div id="contentPanel" class="contentPanel">
+              <div id="historyPanel">
+                <div class="hisTitle">
+                  Feed History
+                </div>
+                <table id="table_id" class="display">
+                    <thead>
+                        <tr>
+                            <th>Feed_id</th>
+                            <th>Feed_Num</th>
+                            <th>Feed_Name</th>
+                            <th>User_ID</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                </table>
+              </div>
+              <div id="ImportPanel" class="hide">
+                  <div class="ImportTitle">
+                      Import New Feed into Database
+                  </div>
+                  <div class="importmodule">
+                    content
+                  </div>
+              </div>
+              <div id="LoadPanel" class="hide">
+                  <div class="LoadTitle">
+                      Load Saved Feed
+                  </div>
+                  <div class="loadmodule">
+                    content
+                  </div>
+              </div>
+            </div>   
+        </div>
+    </div>
+    <div id="loading">
+      Loading...
+      <div class="loader">
+      </div>
+    </div>
 </body>
 </html>
