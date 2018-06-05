@@ -43,9 +43,16 @@
 .OSU-logo {
   height: 50px;
   padding-left:5px;
+  margin-top:auto;
+  margin-bottom: auto;
 }
 .ODOT-logo {
   height: 50px;
+}
+
+.App-header a{
+  margin-top:auto;
+  margin-bottom: auto;
 }
 
 .ride-logo{
@@ -71,7 +78,7 @@
 }
 .App-title{
   text-align: left;
-  font-size: 40px;
+  font-size: 50px;
   padding-top:0px;
   padding-bottom: 0px;
   font-family: sans-serif;

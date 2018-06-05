@@ -1,4 +1,5 @@
 var express = require('express');
+var multer = require('multer')
 var path = require('path');
 var app = express();
 var fs = require('fs');
@@ -6,6 +7,8 @@ var pg = require('pg');
 const {Client } = require('pg')
 var copyFrom = require('pg-copy-streams').from;
 var first = require('firstline');
+var unzip = require('unzip');
+
 
 app.use(express.static('public'));
 
@@ -35,14 +38,42 @@ app.get('/checkUser/:user/Password/:password',function(req,res){
   
 });
 
+app.post('/loadFeed/:user', function(req, res) {
+  var id = req.params.user;
+  console.log("user: ",id);
+  console.log("loadingFile");
+  var upload = multer({
+		storage: multer.diskStorage({
+      destination: function(req, file, callback) {
+        console.log("destination: ./public/usrs/"+id+"/")
+        callback(null, './public/usrs/'+id+'/')
+      },
+      filename: function(req, file, callback) {
+        callback(null, "feed.zip")
+      }
+    }),
+		fileFilter: function(req, file, callback) {
+			var ext = path.extname(file.originalname)
+			if (ext !== '.zip') {
+				return callback(res.end('Only .zip are allowed'), null)
+			}
+			callback(null, true)
+		}
+	}).single('sampleFile');
+	upload(req, res, function(err) {
+    fs.createReadStream('./public/usrs/'+id+'/feed.zip').pipe(unzip.Extract({ path: './public/usrs/'+id+'/feed/' }));
+		res.end('File is loaded')
+	})
+});
+
 app.post('/getHistoryTableData',function(req,res){
   console.log("getting data from server");
   //need to query db for feed info
   var data = 
   {
     "draw": 1,
-    "recordsTotal": 12,
-    "recordsFiltered": 12,
+    "recordsTotal": 2,
+    "recordsFiltered": 2,
     "data": [
       [
         "Airi",

@@ -11,11 +11,18 @@ html {
   width: 100vw;
 }
 .OSU-logo {
+  margin-top:auto;
+  margin-bottom:auto;
   height: 50px;
   padding-left:5px;
 }
 .ODOT-logo {
   height: 50px;
+}
+
+.App-header a{
+  margin-top:auto;
+  margin-bottom: auto;
 }
 .report-icon{
   height:15px;
@@ -67,7 +74,7 @@ html {
 }
 .App-title{
   text-align: left;
-  font-size: 40px;
+  font-size: 50px;
   padding-top:0px;
   padding-bottom: 0px;
   font-family: sans-serif;
@@ -243,6 +250,11 @@ li a:hover:not(.active) {
   width:85vw;
   height:91vh;
   display: block;
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 2s; /* Firefox < 16 */
+        -ms-animation: fadein 2s; /* Internet Explorer */
+         -o-animation: fadein 2s; /* Opera < 12.1 */
+            animation: fadein 2s;
 }
 
 .hisTitle{
@@ -263,6 +275,11 @@ li a:hover:not(.active) {
   display:none;
   width:85vw;
   height:91vh;
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 2s; /* Firefox < 16 */
+        -ms-animation: fadein 2s; /* Internet Explorer */
+         -o-animation: fadein 2s; /* Opera < 12.1 */
+            animation: fadein 2s;
 }
 
 .ImportTitle{
@@ -272,16 +289,22 @@ li a:hover:not(.active) {
   margin-right: auto;
   margin-top:10px;
   margin-bottom: 10px;
-  height:9vh;
+  height:fit-content;
   color:#222;
   font-size: 32px;
   font-weight: bold;
   border-bottom: solid 2px black;
+  padding-bottom: 5px;
 }
 #LoadPanel{
   display:none;
   width:85vw;
   height:91vh;
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 2s; /* Firefox < 16 */
+        -ms-animation: fadein 2s; /* Internet Explorer */
+         -o-animation: fadein 2s; /* Opera < 12.1 */
+            animation: fadein 2s;
 }
 
 .LoadTitle{
@@ -301,9 +324,318 @@ li a:hover:not(.active) {
 #table_id{
   height:100%;
   width:98%;
-  padding-left:5px;
-  padding-right:5px;
 }
 
+#import_table_id{
+  height:100%;
+  width:100%;
+}
+
+#agencyloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#agencynotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+
+#stopsloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#stopsnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#routesloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#routesnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+
+#tripsloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#tripsnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+
+#stop_timesloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#stop_timesnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#calendarloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#calendarnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#calendar_datesloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#calendar_datesnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#fare_attributesloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#fare_attributesnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#shapesloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#shapesnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#fare_rulesloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#fare_rulesnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#transfersloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#transfersnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#frequenciesloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#frequenciesnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#feed_infoloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#feed_infonotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#board_alightloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#board_alightnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#trip_capacityloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#trip_capacitynotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#ridertriploaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#ridertripnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#ride_feed_infoloaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#ride_feed_infonotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+#ridershiploaded{
+  display: none;
+  color:green;
+  font-weight: bold;
+}
+#ridershipnotloaded{
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  font-weight: bold;
+}
+
+
+
+input,button{
+  background-color: #222;
+  font-size:16px;
+  font-weight: bold;
+  color:white;
+  padding:5px;
+  border-radius:5px;
+  border:none;
+  cursor: pointer;
+}
+
+input:hover,button:hover{
+  background-color:#999;
+}
+
+tr .loaded{
+  background-color: rgb(139, 224, 139);
+  padding:5px;
+  text-align: center;
+  width:fit-content;
+}
+
+.importmodule{
+  width:100%;
+  height:100%;
+}
+.toolBar{
+  padding:5px;
+  border-top:solid 2px #222;
+  display:inline-flex;
+  width:100%;
+  height:100%;
+}
+
+.toolBar input,button{
+  margin-right:5px;
+}
+
+.fileSelector{
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.required{
+  width:fit-content;
+  color:green;
+  padding:5px;
+}
+.notrequired{
+  width:fit-content;
+  color:rgb(235, 92, 92);;
+  padding:5px;
+  font-weight: bold;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 
 

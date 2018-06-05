@@ -7,6 +7,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
       <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
       <script src="./js/controller.js"></script>
   </head>
   <title>WebHub</title>
@@ -30,7 +31,7 @@
                       </li>
                       <li>
                         <a class="active" href="#Upload">
-                          <div class="NavElement"><img src="./img/upload-icon.png" class="upload-icon" alt="uploadicon" />Upload</div>
+                          <div class="NavElement"><img src="./img/upload-icon.png" class="upload-icon" alt="uploadicon" />Feed Management</div>
                         </a>
                       </li>
                       <li class="SubNavElement">
@@ -40,12 +41,12 @@
                       </li>
                       <li class="SubNavElement">
                           <a onClick="showLoader()" href="#UploadLoad">
-                            <div >Load Saved Feed</div>
+                            <div >Load</div>
                           </a>
                       </li>
                       <li class="SubNavElement">
                           <a  onClick="showImport()" href="#DBLoad">
-                            <div >Import new into DB</div>
+                            <div >Upload</div>
                           </a>
                       </li>
                       <li>
@@ -82,10 +83,160 @@
               </div>
               <div id="ImportPanel" class="hide">
                   <div class="ImportTitle">
-                      Import New Feed into Database
+                      Upload New Feed
+                      <div class="toolBar">
+                        <div class="fileSelector">
+                            <form id="uploadForm"
+                                enctype="multipart/form-data"
+                                method="post">
+                              <input type="file" name="sampleFile" />
+                              <input type="submit" value="Upload" name="submit">
+                              <p id="status"></p>
+                            </form>
+                        </div>
+                        <div class="fileSelector"><button>Download</button></div>
+                        <div class="fileSelector"><button>Import to DB</button></div>
+                      </div>
                   </div>
                   <div class="importmodule">
-                    content
+                    <table id="import_table_id" class="display">
+                      <thead>
+                        <tr>
+                            <th>FileName</th>
+                            <th>Loaded</th>
+                            <th>Required</th>
+                            <th>View</th>
+                            <th>Create</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <tr id="agencyrow">
+                              <td>agency.txt</td>
+                              <td><div id="agencynotloaded">No</div><div id = "agencyloaded" class="loaded">Yes</div></td>
+                              <td><div class="required">Yes</div></td>
+                              <td><button>Edit</button></td>
+                              <td>na</td>
+                          </tr>
+                          <tr id="stopsrow">
+                            <td>stops.txt</td>
+                            <td><div id="stopsnotloaded">No</div><div id = "stopsloaded" class="loaded">Yes</div></td>
+                            <td><div class="required">Yes</div></td>
+                            <td><button>Edit</button></td>
+                            <td>na</td>
+                          </tr>
+                          <tr id="routesrow">
+                            <td>stops.txt</td>
+                            <td><div id="routesnotloaded">No</div><div id = "routesloaded" class="loaded">Yes</div></td>
+                            <td><div class="required">Yes</div></td>
+                            <td><button>Edit</button></td>
+                            <td>na</td>
+                          </tr>
+                          <tr id="tripsrow">
+                            <td>trips.txt</td>
+                            <td><div id="tripsnotloaded">No</div><div id = "tripsloaded" class="loaded">Yes</div></td>
+                            <td><div class="required">Yes</div></td>
+                            <td><button>Edit</button></td>
+                            <td>na</td>
+                          </tr>
+                          <tr id="stop_timessrow">
+                              <td>stop_times.txt</td>
+                              <td><div id="stop_timesnotloaded">No</div><div id = "stop_timesloaded" class="loaded">Yes</div></td>
+                              <td><div class="required">Yes</div></td>
+                              <td><button>Edit</button></td>
+                              <td>na</td>
+                          </tr>
+                          <tr id="calendarrow">
+                              <td>calendar.txt</td>
+                              <td><div id="calendarnotloaded">No</div><div id = "calendarloaded" class="loaded">Yes</div></td>
+                              <td><div class="required">Yes</div></td>
+                              <td><button>Edit</button></td>
+                              <td>na</td>
+                          </tr>
+                          <tr id="calendar_datesrow">
+                              <td>calendar_dates.txt</td>
+                              <td><div id="calendar_datesnotloaded">No</div><div id = "calendar_datesloaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td>na</td>
+                          </tr>
+                          <tr id="fare_attributesrow">
+                              <td>fare_attributes.txt</td>
+                              <td><div id="fare_attributesnotloaded">No</div><div id = "fare_attributesloaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td>na</td>
+                          </tr>
+                          <tr id="shapesrow">
+                              <td>shapes.txt</td>
+                              <td><div id="shapesnotloaded">No</div><div id = "shapesloaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td>na</td>
+                          </tr>
+                          <tr id="fare_rulesrow">
+                              <td>fare_rules.txt</td>
+                              <td><div id="fare_rulesnotloaded">No</div><div id = "fare_rulesloaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td>na</td>
+                          </tr>
+                          <tr id="transfersrow">
+                              <td>transfers.txt</td>
+                              <td><div id="transfersnotloaded">No</div><div id = "transfersloaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td>na</td>
+                          </tr>
+                          <tr id="frequenciesrow">
+                              <td>frequencies.txt</td>
+                              <td><div id="frequenciesnotloaded">No</div><div id = "frequenciesloaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td>na</td>
+                          </tr>
+                          <tr id="feed_inforow">
+                              <td>feed_info.txt</td>
+                              <td><div id="feed_infonotloaded">No</div><div id = "feed_infoloaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td>na</td>
+                          </tr>
+                          <tr id="board_alightrow">
+                              <td>board_alight.txt</td>
+                              <td><div id="board_alightnotloaded">No</div><div id = "board_alightloaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td><button>Create</button></td>
+                          </tr>
+                          <tr id="trip_capacityrow">
+                              <td>trip_capacity.txt</td>
+                              <td><div id="trip_capacitynotloaded">No</div><div id = "trip_capacityloaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td><button>Create</button></td>
+                          </tr>
+                          <tr id="ride_feed_inforow">
+                              <td>ride_feed_info.txt</td>
+                              <td><div id="ride_feed_infonotloaded">No</div><div id = "ride_feed_infoloaded" class="loaded">Yes</div></td>
+                              <td><div class="required">Yes</div></td>
+                              <td><button>Edit</button></td>
+                              <td><button>Create</button></td>
+                          </tr>
+                          <tr id="ridertriprow">
+                              <td>ridertrip.txt</td>
+                              <td><div id="ridertripnotloaded">No</div><div id = "ridertriploaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td><button>Create</button></td>
+                          </tr>
+                          <tr id="ridershiprow">
+                              <td>ridership.txt</td>
+                              <td><div id="ridershipnotloaded">No</div><div id = "ridershiploaded" class="loaded">Yes</div></td>
+                              <td><div class="notrequired">No</div></td>
+                              <td><button>Edit</button></td>
+                              <td><button>Create</button></td>
+                          </tr>
+                  </table>
                   </div>
               </div>
               <div id="LoadPanel" class="hide">
@@ -93,7 +244,7 @@
                       Load Saved Feed
                   </div>
                   <div class="loadmodule">
-                    content
+                    <h2>Under Construction...</h2>
                   </div>
               </div>
             </div>   

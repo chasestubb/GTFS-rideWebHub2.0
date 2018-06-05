@@ -94,7 +94,7 @@ class App extends Component {
                   </li>
                   <li>
                     <Link className={this.state.navUpload} to='/Upload'>
-                      <div className="NavElement"><img src={uploadIcon} className="upload-icon" alt="uploadicon" />Upload</div>
+                      <div className="NavElement"><img src={uploadIcon} className="upload-icon" alt="uploadicon" />Feed Management</div>
                     </Link>
                   </li>
                   <li>

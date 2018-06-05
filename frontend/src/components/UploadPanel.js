@@ -42,7 +42,7 @@ class Upload extends React.Component {
         .then((mycount) => {
           if(mycount.valid === true){
             //alert("received true")
-            window.open("http://localhost:8080/?User="+this.state.username+"/",'_self');
+            window.open("http://localhost:8080/?User="+this.state.username+"#/",'_self');
           }
           else{
             //alert("received false")
