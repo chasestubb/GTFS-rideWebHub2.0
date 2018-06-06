@@ -38,6 +38,9 @@ app.get('/checkUser/:user/Password/:password',function(req,res){
     var package = {
       valid: ans
     }
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.json(package);
   });
   
