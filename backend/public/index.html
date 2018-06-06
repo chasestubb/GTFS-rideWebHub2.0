@@ -12,7 +12,7 @@
   </head>
   <title>WebHub</title>
 <body>
-    <div class="App">
+    <div id="topLevel" class="App">
         <header class="App-header">
           <div class="logos">
             <img src="./img/osu-logo-reversed-update.png" class="OSU-logo" alt="OSUlogo" />
@@ -30,22 +30,18 @@
                         </a>
                       </li>
                       <li>
-                        <a class="active" href="#Upload">
+                        <a class="active" >
                           <div class="NavElement"><img src="./img/upload-icon.png" class="upload-icon" alt="uploadicon" />Feed Management</div>
                         </a>
                       </li>
                       <li class="SubNavElement">
-                          <a onClick="showHistory()" href="#UploadHistory">
+                          <a onClick="showHistory()" >
                             <div >History</div>
                           </a>
                       </li>
+                      
                       <li class="SubNavElement">
-                          <a onClick="showLoader()" href="#UploadLoad">
-                            <div >Load</div>
-                          </a>
-                      </li>
-                      <li class="SubNavElement">
-                          <a  onClick="showImport()" href="#DBLoad">
+                          <a  onClick="showImport()" >
                             <div >Upload</div>
                           </a>
                       </li>
@@ -89,14 +85,22 @@
                             <form id="uploadForm"
                                 enctype="multipart/form-data"
                                 method="post">
-                              <input type="file" name="sampleFile" />
-                              <input type="submit" value="Upload" name="submit">
+                              <input id="fileSelection" type="file" name="sampleFile" />
+                              <input type="submit" value="Load" name="submit">
                               <p id="status"></p>
                             </form>
                         </div>
-                        <div class="fileSelector"><button>Download</button></div>
-                        <div class="fileSelector"><button>Import to DB</button></div>
                       </div>
+                  </div>
+                  <div class="uploadInfo">
+                      Select the Organization
+                      <select id ="organizationSelector">
+                          <option value=1>RVTD</option>
+                          <option value=2>JCT</option>
+                          <option value=3>LTD</option>
+                      </select>
+                      Select the Name <input id="feedName" type="text"></input>
+                      <div class="fileSelector"><button onclick="uploadFeed()">Import to DB</button></div>
                   </div>
                   <div class="importmodule">
                     <table id="import_table_id" class="display">

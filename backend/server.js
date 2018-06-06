@@ -8,6 +8,11 @@ const {Client } = require('pg')
 var copyFrom = require('pg-copy-streams').from;
 var first = require('firstline');
 var unzip = require('unzip');
+var rimraf = require('rimraf');
+
+var fileNames = ["agency.txt","stops.txt","routes.txt","trips.txt","stop_times.txt","calendar.txt","calendar_dates.txt",
+"fare_attributes.txt","shapes.txt","fare_rules.txt","transfers.txt","frequencies.txt","feed_info.txt","board_alight.txt",
+"trip_capacity.txt","ride_feed_info.txt","ridertrip.txt","ridership.txt"];
 
 
 app.use(express.static('public'));
@@ -61,42 +66,91 @@ app.post('/loadFeed/:user', function(req, res) {
 		}
 	}).single('sampleFile');
 	upload(req, res, function(err) {
-    fs.createReadStream('./public/usrs/'+id+'/feed.zip').pipe(unzip.Extract({ path: './public/usrs/'+id+'/feed/' }));
-		res.end('File is loaded')
-	})
+    var stream = fs.createReadStream('./public/usrs/'+id+'/feed.zip').pipe(unzip.Extract({ path: './public/usrs/'+id+'/feed/' }));
+    stream.on('close', function(){
+      const Folder = './public/usrs/'+id+'/feed/';
+      console.log("loaded files: ");
+      fs.readdirSync(Folder).forEach(file => {
+        if (fileNames.indexOf(file) > -1) {
+          console.log(file);
+      } else {
+          console.log("deleting " +file);
+          fs.unlinkSync('./public/usrs/'+id+'/feed/'+file)
+      }
+      });
+      res.end('File is loaded');
+    });
+  });
+});
+
+
+app.get('/getLoadedFiles/:user', function(req, res) {
+  var id = req.params.user;
+  console.log("user: ",id);
+  console.log("gettingUploadedfiles");
+  const Folder = './public/usrs/'+id+'/feed/';
+  var files = fs.readdirSync(Folder);
+  console.log(files);
+  var data = {fileNames : files};
+  res.json(data);
 });
 
 app.post('/getHistoryTableData',function(req,res){
   console.log("getting data from server");
   //need to query db for feed info
-  var data = 
+  var info = 
   {
     "draw": 1,
-    "recordsTotal": 2,
-    "recordsFiltered": 2,
-    "data": [
-      [
-        "Airi",
-        "Satou",
-        "Accountant",
-        "Tokyo",
-        "28th Nov 08",
-        "$162,700"
-      ],
-      [
-        "Angelica",
-        "Ramos",
-        "Chief Executive Officer (CEO)",
-        "London",
-        "9th Oct 09",
-        "$1,200,000"
-      ]
-    ]
+    "recordsTotal": 0,
+    "recordsFiltered": 0,
+    "data": []
   }
-  res.json(data);
+  const client = new Client({
+    user: 'rideadmindb',
+    host: 'ridedb.cr8hn6m3gchm.us-west-2.rds.amazonaws.com',
+    database: 'nodeTest',
+    password: 'alltheridestuff',
+    port: 5432,
+  });
+  client.connect();
+  var count = 0;
+  console.log("about to query");
+  client.query("select * from feeds;",(err, resp) => {
+    resp.rows.forEach(row =>{
+      var arr = [];
+      arr.push(row.feed_id);
+      arr.push(row.feed_num);
+      arr.push(row.name);
+      arr.push(row.user_id);
+      arr.push(row.date);
+      arr.push(row.time);
+      info.data.push(arr);
+      count = count +1;
+    });
+    info.recordsTotal = count;
+    res.json(info);
+  });
 });
 
-app.post('/upload', function(req, res) {
+app.post('/deleteFiles/:user',function(req,res){
+  console.log("deleting files");
+  var id = req.params.user;
+  const Folder = './public/usrs/'+id+'/feed';
+  rimraf(Folder, function () { 
+    console.log('done'); 
+    const fileP = './public/usrs/'+id+'/feed.zip';
+    if (fs.existsSync(fileP)) {
+      fs.unlinkSync(fileP);
+    }
+    res.status(200).json("done");
+  });
+});
+
+app.post('/upload/:user/:feedID/:feedName', function(req, res) {
+  var id = req.params.user;
+  var feedid = req.params.feedID;
+  var feedName = req.params.feedName;
+  var feedNum;
   const client = new Client({
     user: 'rideadmindb',
     host: 'ridedb.cr8hn6m3gchm.us-west-2.rds.amazonaws.com',
@@ -106,28 +160,124 @@ app.post('/upload', function(req, res) {
   });
   client.connect();
 
-  var done = function(){console.log("done")};
-  var err1 = function(err,res){console.log(err,res)};
-  var err2 = function(err,res){console.log(err,res)};
-  first('./testFeeds/GTFS-ride_JCT_17-18/agency.txt')
-    .then(val => {
-      console.log("Headers ",val);
-      var stream = client.query(copyFrom('COPY agency('+val+') FROM STDIN WITH CSV HEADER' ));
-      var fileStream = fs.createReadStream('./testFeeds/GTFS-ride_JCT_17-18/agency.txt');
-      fileStream.on('error', err1);
-      stream.on('error', err2);
-      stream.on('end', done);
-      fileStream.pipe(stream);
-      client.query('UPDATE agency\
-        SET feed_id = 0\
-        WHERE feed_id IS NULL;\
-        UPDATE agency\
-        SET feed_num = 0\
-        WHERE feed_num IS NULL;',(err, res) => {
-          console.log(err, res);
-        });
-        res.status(200).json("done");
-    });
+  client.query("select count(*)::Integer as val from feeds where feed_id="+feedid+";",(err, resp1) => {
+    if (err) {
+      console.log(err.stack)
+    } else {
+      
+      var today = new Date();
+      var date = today.toLocaleDateString();
+      var time = today.toLocaleTimeString();
+      feedNum = resp1.rows[0]["val"];
+      feedNum = feedNum+1;
+      console.log(feedNum);
+      //need to insert feed into feed table
+      client.query("INSERT INTO feeds(feed_id,feed_num,user_id,name,date,time)\
+      VALUES \
+      ("+feedid+","+feedNum+",'"+id+"','"+feedName+"','"+date+"','"+time+"');",(err, resp2) => {
+              console.log(err, resp2);
+              //after insert of feed 
+              loadFiles(feedNum,feedid,id);
+              res.status(200).json("done");
+            });
+    }
+  });
 });
+
+function getTable(file){
+  if(file == "agency.txt"){
+    return "agency";
+  }
+  else if(file == "stops.txt"){
+    return "stops";
+  }
+  else if(file == "routes.txt"){
+    return "routes";
+  }
+  else if(file == "trips.txt"){
+    return "trips";
+  }
+  else if(file == "stop_times.txt"){
+    return "stop_times";
+  }
+  else if(file == "calendar.txt"){
+    return "calendar";
+  }
+  else if(file == "calendar_dates.txt"){
+    return "calendar_dates";
+  }
+  else if(file == "fare_attributes.txt"){
+    return "fare_attributes";
+  }
+  else if(file == "shapes.txt"){
+    return "shapes";
+  }
+  else if(file == "fare_rules.txt"){
+    return "fare_rules";
+  }
+  else if(file == "transfers.txt"){
+    return "transfers";
+  }
+  else if(file == "frequencies.txt"){
+    return "frequencies";
+  }
+  else if(file == "feed_info.txt"){
+    return "feed_info";
+  }
+  else if(file == "board_alight.txt"){
+      return "board_alight";
+  }
+  else if(file == "trip_capacity.txt"){
+    return "trip_capacity";
+  }
+  else if(file == "ride_feed_info.txt"){
+    return "ride_feed_info";
+  }
+  else if(file == "ridertrip.txt"){
+    return "ridertrip";
+  }
+  else if(file == "ridership.txt"){
+    return "ridership";
+  }
+}
+
+function loadFiles(feedNum,feedid,id){
+  const client = new Client({
+    user: 'rideadmindb',
+    host: 'ridedb.cr8hn6m3gchm.us-west-2.rds.amazonaws.com',
+    database: 'nodeTest',
+    password: 'alltheridestuff',
+    port: 5432,
+  });
+  client.connect();
+  const Folder = './public/usrs/'+id+'/feed/';
+  fs.readdirSync(Folder).forEach(file => {
+    var table = getTable(file);
+    //process each file and load into DB
+    var done = function(){console.log("done")};
+    var err1 = function(err,res){console.log(err,res)};
+    var err2 = function(err,res){console.log(err,res)};
+    first('./public/usrs/'+id+'/feed/'+file)
+      .then(val => {
+        console.log("Headers ",val);
+        console.log('COPY ' +table+'('+val+') FROM STDIN WITH CSV HEADER')
+        var stream = client.query(copyFrom('COPY ' +table+'('+val+') FROM STDIN WITH CSV HEADER' ));
+        var fileStream = fs.createReadStream('./public/usrs/'+id+'/feed/'+file);
+        fileStream.on('error', err1);
+        stream.on('error', err2);
+        stream.on('end', done);
+        fileStream.pipe(stream);
+        client.query('UPDATE '+table+'\
+          SET feed_id = '+feedid+'\
+          WHERE feed_id IS NULL;\
+          UPDATE '+table+'\
+          SET feed_num = '+feedNum+'\
+          WHERE feed_num IS NULL;',(err, res) => {
+            console.log(err, res);
+          });
+      });
+  });
+   return;
+}
 
 app.listen(8080,function(){console.log("Listening on port 8080")});

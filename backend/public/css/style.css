@@ -3,9 +3,7 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
-html {
-  
-}
+
 .App {
   text-align: center;
   width: 100vw;
@@ -553,7 +551,7 @@ li a:hover:not(.active) {
 
 
 
-input,button{
+button{
   background-color: #222;
   font-size:16px;
   font-weight: bold;
@@ -564,16 +562,15 @@ input,button{
   cursor: pointer;
 }
 
-input:hover,button:hover{
+button:hover{
   background-color:#999;
 }
 
-tr .loaded{
-  background-color: rgb(139, 224, 139);
-  padding:5px;
-  text-align: center;
-  width:fit-content;
+.toolBar input:hover{
+  background-color:#999;
+  
 }
+
 
 .importmodule{
   width:100%;
@@ -588,13 +585,44 @@ tr .loaded{
 }
 
 .toolBar input,button{
+  background-color: #222;
+  font-size:16px;
+  font-weight: bold;
+  color:white;
+  padding:5px;
   margin-right:5px;
+  border-radius:5px;
+  border:none;
+  cursor: pointer;
 }
 
 .fileSelector{
   font-size: 16px;
   font-weight: bold;
   text-align: left;
+}
+
+.uploadInfo{
+  align-content: center;
+  display:flex;
+  height:50px;
+  width:100%;
+  margin-top:auto;
+  margin-bottom:auto;
+}
+
+select{
+  margin-left:5px;
+  margin-right:5px;
+}
+
+.uploadInfo input{
+  height:20px;
+  margin-left:5px;
+  margin-right:5px;
+  margin-top:0px;
+  margin-bottom:0px;
+  padding:0px;
 }
 
 .required{
