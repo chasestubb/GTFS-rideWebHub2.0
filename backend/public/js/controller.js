@@ -281,6 +281,7 @@ function saveFile(){
 
 function showEdit(file){
     $('#editLabel').html(file);
+    $('#editContents').val("");
     var panel = document.getElementById("ImportPanel");
     panel.style.display = "none";
     //retrieve the file content with ajax call
