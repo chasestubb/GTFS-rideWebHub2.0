@@ -1,6 +1,7 @@
 var user;
 var myFeedFiles;
 var loaded = 0;
+var loaded2 = 0;
 function getQueryVariable(variable)
 {
        var query = window.location.search.substring(1);
@@ -84,9 +85,54 @@ $('#uploadForm').submit(function() {
     
     //Very important line, it disable the page refresh.
     return false;
-    });    
+    });   
+    $('#fileSelection2').change(function(){
+        loaded2 = 1;
+    });
+
+    $('#uploadForm2').submit(function() {
+        var myInput = $("#fileSelection2").val();
+        var filecheck = myInput.split("\\").pop();
+        console.log("file: "+filecheck);
+        var file = $('#createLabel').text();
+        console.log("title "+file);
+
+        if (loaded2 == 0) {
+            $("#status2").empty().text("Error: Must Select a File First");
+        return false;
+        }
+        console.log("they equal "+(file===filecheck));
+        if((file===filecheck)==false){
+            $("#status2").empty().text("Error: Must Select file "+file);
+            return false;
+        }
+        
+        //console.log(myInput);
+        
+        console.log("uploading file "+file);
+        $("#status2").empty().text("File is uploading...");
+        $(this).ajaxSubmit({
+            url:'/loadRideFile/'+user+'/'+file,
+            error: function(xhr) {
+            $("#status2").empty().text(response);
+                console.log('Error: ' + xhr.status);
+            },
+            success: function(response) {
+                $("#status2").empty().text(response);
+                console.log(response);
+                getFilesLoaded();
+            }
+    });
+    
+    //Very important line, it disable the page refresh.
+    return false;
+    });     
 
 });
+
+
+
+
 
 function updateFileStatus(files){
     var myfileNames = ["agency.txt","stops.txt","routes.txt","trips.txt","stop_times.txt","calendar.txt","calendar_dates.txt",
@@ -212,6 +258,97 @@ function uploadFeed() {
     success : function (data) {
     }
 });
+}
+
+function saveFile(){
+    var file = $('#editLabel').text();
+    var contents = $('#editContents').val();
+    console.log(file);
+    console.log(contents);
+    $.ajax({
+        url : "saveFile/"+user+"/"+file+"/",
+        async:"false",
+        type: "POST",
+        dataType: "text",
+        data:{"mytext":contents},
+        success : function (data) {
+            console.log(data);
+            $("#saveStatus").empty().text("");
+            $("#saveStatus").empty().text(data);
+        }
+    });
+}
+
+function showEdit(file){
+    $('#editLabel').html(file);
+    var panel = document.getElementById("ImportPanel");
+    panel.style.display = "none";
+    //retrieve the file content with ajax call
+    $.ajax({
+        url : "getFile/"+user+"/"+file+"/",
+        async:"false",
+        type: "GET",
+        dataType: "text",
+        data:{},
+        success : function (data) {
+            $('#editContents').val(data);
+        }
+    });
+
+    var history = document.getElementById("editPanel");
+    history.style.display = "block";
+    console.log("Showing Edit");
+}
+
+function placeDownload(){
+    console.log("place download");
+    var div = $("#downloadLink");
+    var file = $('#createLabel').text();
+    div.html("<a>"+file+"</a>");
+}
+
+function showCreate(file){
+    $('#createLabel').html(file);
+    $('#templateLoad').html(file);
+    if(file=="board_alight.txt"){
+        document.getElementById('board_alight_download').style.display = "block";
+    }
+    else if(file=="ridership.txt"){
+        document.getElementById('ridership_download').style.display = "block";
+    }
+    else if(file=="ridertrip.txt"){
+        document.getElementById('ridertrip_download').style.display = "block";
+    }
+    else if(file=="trip_capacity.txt"){
+        document.getElementById('trip_capacity_download').style.display = "block";
+    }
+    else if(file=="ride_feed_info.txt"){
+        document.getElementById('ride_feed_info_download').style.display = "block";
+    }
+    var panel = document.getElementById("ImportPanel");
+    panel.style.display = "none";
+    var history = document.getElementById("createPanel");
+    history.style.display = "block";
+    console.log("Showing create");
+}
+
+function backToLoad(){
+    document.getElementById('board_alight_download').style.display = "none";
+    document.getElementById('ridership_download').style.display = "none";
+    document.getElementById('ridertrip_download').style.display = "none";
+    document.getElementById('trip_capacity_download').style.display = "none";
+    document.getElementById('ride_feed_info_download').style.display = "none";
+    var panel = document.getElementById("editPanel");
+    panel.style.display = "none";
+    $("#saveStatus").empty().text("");
+    var panel = document.getElementById("createPanel");
+    panel.style.display = "none";
+    var history = document.getElementById("ImportPanel");
+    history.style.display = "block";
+    $('#fileSelection2').val(null);
+    loaded2 = 0;
+    $("#status2").empty().text("");
+    console.log("Showing Import");
 }
 
 function showHistory(){

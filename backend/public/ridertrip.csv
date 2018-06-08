@@ -1,0 +1,1 @@
+rider_id,agency_id,trip_id,boarding_stop_id,boarding_stop_sequence,alighting_stop_id,alighting_stop_sequence,service_date,boarding_time,alighting_time,rider_type,rider_type_description,fare_paid,transaction_type,fare_media,accompanying_device,transfer_status

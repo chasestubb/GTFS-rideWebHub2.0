@@ -1,7 +1,7 @@
 import React from 'react';
 import tableau from 'tableau-api';
 
-class Tablaeu extends React.Component {
+class Reports extends React.Component {
   constructor(props){
     super(props);
     this.updateHandler  =   this.props.updateProc;
@@ -10,7 +10,7 @@ class Tablaeu extends React.Component {
   }
   initTableau() {
     const vizUrl =
-        "https://public.tableau.com/views/rvtd_demo/visual";
+        "https://public.tableau.com/views/rvtd_demo/table";
 
     const options = {
         hideTabs: true,
@@ -40,4 +40,4 @@ class Tablaeu extends React.Component {
   }
 };
 
-export default Tablaeu;
+export default Reports;

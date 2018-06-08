@@ -3,6 +3,7 @@ var multer = require('multer')
 var path = require('path');
 var app = express();
 var fs = require('fs');
+var bodyParser = require("body-parser");
 var pg = require('pg');
 const {Client } = require('pg')
 var copyFrom = require('pg-copy-streams').from;
@@ -16,6 +17,26 @@ var fileNames = ["agency.txt","stops.txt","routes.txt","trips.txt","stop_times.t
 
 
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.get('/getFile/:user/:file',function(req,res){
+  var user = req.params.user;
+  var file = req.params.file;
+  const fileP = './public/usrs/'+user+'/feed/'+file;
+    if (fs.existsSync(fileP)) {
+      fs.readFile(fileP, 'utf8', function (err,data) {
+        if (err) {
+          res.send(err);
+        }
+        res.send(data);
+      });
+    }
+    else{
+      res.send("no content has been loaded for user "+user+" and file "+file);
+    }
+  
+});
 
 app.get('/checkUser/:user/Password/:password',function(req,res){
   const client = new Client({
@@ -44,6 +65,25 @@ app.get('/checkUser/:user/Password/:password',function(req,res){
     res.json(package);
   });
   
+});
+
+app.post('/saveFile/:user/:file/',function(req,res){
+  var file = req.params.file;
+  var user = req.params.user;
+  var contents =req.body.mytext;
+  console.log("Saving file "+file+" for user "+user);
+  //console.log(contents);
+  const fileP = './public/usrs/'+user+'/feed/'+file;
+    if (fs.existsSync(fileP)) {
+      //write new contents;
+      fs.unlinkSync(fileP);
+      fs.writeFile(fileP, contents, (err) => {
+        res.send("The file was succesfully saved!");
+    }); 
+    }
+    else{
+      res.send("no file loaded");
+    }
 });
 
 app.post('/loadFeed/:user', function(req, res) {
@@ -84,6 +124,38 @@ app.post('/loadFeed/:user', function(req, res) {
       res.end('File is loaded');
     });
   });
+});
+
+app.post('/loadRideFile/:user/:file', function(req, res) {
+  var id = req.params.user;
+  var myfile = req.params.file;
+  var dir = './public/usrs/'+id+'/feed/';
+  if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+  }
+  console.log("user: ",id);
+  console.log("File ",myfile);
+  var upload = multer({
+		storage: multer.diskStorage({
+      destination: function(req, file, callback) {
+        console.log("destination: ./public/usrs/"+id+"/feed/")
+        callback(null, './public/usrs/'+id+'/feed/')
+      },
+      filename: function(req, file, callback) {
+        callback(null, myfile);
+      }
+    }),
+		fileFilter: function(req, file, callback) {
+			var ext = path.extname(file.originalname)
+			if (ext !== '.txt') {
+				return callback(res.end('Only .txt are allowed'), null)
+			}
+			callback(null, true)
+		}
+  }).single('sampleFile2');
+  upload(req, res, function(err) {
+      res.end('File is loaded');
+    });
 });
 
 

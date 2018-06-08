@@ -1,0 +1,1 @@
+trip_id,stop_id,stop_sequence,record_use,schedule_relationship,boardings,alightings,current_load,load_type,rack_down,bike_boardings,bike_alightings,ramp_used,ramp_boardings,ramp_alightings,service_date,service_arrival_time,service_departure_time,source

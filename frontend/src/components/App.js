@@ -7,11 +7,10 @@ import vizIcon from './data-viz-icon.png';
 import uploadIcon from './upload-icon.png';
 import reportIcon from './reports-icon.png';
 import MyReport from './Tablaeu';
+import Report from './Reports';
 import Upload from './UploadPanel';
 import Home from './home';
 import { Switch, Route,Link } from 'react-router-dom';
-import Tables from './tables';
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -109,14 +108,14 @@ class App extends Component {
                   </li>
                 </ul>
             </div>
-            <div className="footer">&copy; Copyright Oregon State University 2018</div>
+            
           </div>
           <div id="contentPanel" className="contentPanel">
           <Switch>
             <Route exact path='/'  render={()=>(<Home updateProc={this.home}/>)}/>
             <Route exact path='/Upload'  render={()=>(<Upload updateProc={this.upload}/>)}/>
             <Route exact path='/MapViz' render={()=>(<MyReport updateProc={this.mapViz}/>)}/>
-            <Route exact path='/Reporting' render={()=>(<Tables updateProc={this.Report}/>)}/>
+            <Route exact path='/Reporting' render={()=>(<Report updateProc={this.Report}/>)}/>
           </Switch>
           </div>
         </div>
