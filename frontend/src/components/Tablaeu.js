@@ -10,10 +10,10 @@ class Tablaeu extends React.Component {
   }
   initTableau() {
     const vizUrl =
-        "https://public.tableau.com/views/rvtd_demo/visual";
+        "https://public.tableau.com/views/webhub/StopActivitybyDay";
 
     const options = {
-        hideTabs: true,
+        hideTabs: false,
         width: "83vw",
         height: "90vh",
         hideToolbar: true,

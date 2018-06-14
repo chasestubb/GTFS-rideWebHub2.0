@@ -110,7 +110,7 @@ app.post('/loadFeed/:user', function(req, res) {
 	}).single('sampleFile');
 	upload(req, res, function(err) {
     var stream = fs.createReadStream('./public/usrs/'+id+'/feed.zip').pipe(unzip.Extract({ path: './public/usrs/'+id+'/feed/' }));
-    stream.on('close', function(){
+    stream.on('close', function(err){
       const Folder = './public/usrs/'+id+'/feed/';
       console.log("loaded files: ");
       fs.readdirSync(Folder).forEach(file => {
@@ -154,7 +154,13 @@ app.post('/loadRideFile/:user/:file', function(req, res) {
 		}
   }).single('sampleFile2');
   upload(req, res, function(err) {
-      res.end('File is loaded');
+      if(err){
+        res.end(err);
+      }
+      else{
+        res.end('File is loaded');
+      }
+      
     });
 });
 
@@ -252,7 +258,7 @@ app.post('/upload/:user/:feedID/:feedName', function(req, res) {
       ("+feedid+","+feedNum+",'"+id+"','"+feedName+"','"+date+"','"+time+"');",(err, resp2) => {
               console.log(err, resp2);
               //after insert of feed 
-              loadFiles(feedNum,feedid,id);
+              var status = loadFiles(feedNum,feedid,id);
               res.status(200).json("done");
             });
     }
@@ -326,7 +332,8 @@ function loadFiles(feedNum,feedid,id){
   });
   client.connect();
   const Folder = './public/usrs/'+id+'/feed/';
-  fs.readdirSync(Folder).forEach(file => {
+  var itemsProcessed = 0;
+  fs.readdirSync(Folder).forEach((file, index, array) => {
     var table = getTable(file);
     //process each file and load into DB
     var done = function(){console.log("done")};
@@ -340,19 +347,23 @@ function loadFiles(feedNum,feedid,id){
         var fileStream = fs.createReadStream('./public/usrs/'+id+'/feed/'+file);
         fileStream.on('error', err1);
         stream.on('error', err2);
-        stream.on('end', done);
-        fileStream.pipe(stream);
-        client.query('UPDATE '+table+'\
+        stream.on('end', function(){
+          client.query('UPDATE '+table+'\
           SET feed_id = '+feedid+'\
           WHERE feed_id IS NULL;\
           UPDATE '+table+'\
           SET feed_num = '+feedNum+'\
           WHERE feed_num IS NULL;',(err, res) => {
             console.log(err, res);
+            itemsProcessed++;
+            if(itemsProcessed === array.length) {
+              return 1;
+            }
           });
+        });
+        fileStream.pipe(stream);
       });
   });
-   return;
 }
 
 app.listen(8080,function(){console.log("Listening on port 8080")});
