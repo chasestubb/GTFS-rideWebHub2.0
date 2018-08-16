@@ -254,7 +254,7 @@ app.post('/upload/:user/:feedID/:feedName/:feedPopulation', function(req, res) {
       feedNum = feedNum+1;
       console.log(feedNum);
       //need to insert feed into feed table
-      client.query("INSERT INTO feeds(feed_id,feed_num,user_id,name,date,time,Population)\
+      client.query("INSERT INTO feeds(feed_id,feed_num,user_id,name,date,time,population)\
       VALUES \
       ("+feedid+","+feedNum+",'"+id+"','"+feedName+"','"+date+"','"+time+"',"+feedPopulation+");",(err, resp2) => {
               console.log(err, resp2);
