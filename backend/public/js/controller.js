@@ -241,16 +241,22 @@ function uploadFeed() {
     }
   var feedid = $("#organizationSelector").val();
   var feedName = $("#feedName").val();
+  var feedPopulation= $("#feedPopulation").val();
   if(feedName == null|| feedName == ""){
         $("#status").empty().text("Error: Need to select a name...");
       return;
   }
+  if(feedPopulation == null|| feedPopulation == ""){
+    $("#status").empty().text("Error: Need to enter a population...");
+  return;
+}
   console.log(feedid);
   console.log(feedName);
-  console.log("url: "+ "upload/"+user+"/"+feedid+"/"+feedName+"/")
+  console.log(feedPopulation);
+  console.log("url: "+ "upload/"+user+"/"+feedid+"/"+feedName+"/"+feedPopulation+"/");
 
   $.ajax({
-    url : "upload/"+user+"/"+feedid+"/"+feedName+"/",
+    url : "upload/"+user+"/"+feedid+"/"+feedName+"/"+feedPopulation+"/",
     async:"false",
     type: "POST",
     dataType: "json",

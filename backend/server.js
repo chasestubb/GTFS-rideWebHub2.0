@@ -227,10 +227,11 @@ app.post('/deleteFiles/:user',function(req,res){
   });
 });
 
-app.post('/upload/:user/:feedID/:feedName', function(req, res) {
+app.post('/upload/:user/:feedID/:feedName/:feedPopulation', function(req, res) {
   var id = req.params.user;
   var feedid = req.params.feedID;
   var feedName = req.params.feedName;
+  var feedPopulation = req.params.feedPopulation;
   var feedNum;
   const client = new Client({
     user: 'rideadmindb',
@@ -253,9 +254,9 @@ app.post('/upload/:user/:feedID/:feedName', function(req, res) {
       feedNum = feedNum+1;
       console.log(feedNum);
       //need to insert feed into feed table
-      client.query("INSERT INTO feeds(feed_id,feed_num,user_id,name,date,time)\
+      client.query("INSERT INTO feeds(feed_id,feed_num,user_id,name,date,time,population)\
       VALUES \
-      ("+feedid+","+feedNum+",'"+id+"','"+feedName+"','"+date+"','"+time+"');",(err, resp2) => {
+      ("+feedid+","+feedNum+",'"+id+"','"+feedName+"','"+date+"','"+time+"',"+feedPopulation+");",(err, resp2) => {
               console.log(err, resp2);
               //after insert of feed 
               var status = loadFiles(feedNum,feedid,id);
