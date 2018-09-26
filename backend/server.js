@@ -8,7 +8,7 @@ var pg = require('pg');
 const {Client } = require('pg')
 var copyFrom = require('pg-copy-streams').from;
 var first = require('firstline');
-var unzip = require('unzip');
+var unzip = require('unzip2');
 var rimraf = require('rimraf');
 
 var fileNames = ["agency.txt","stops.txt","routes.txt","trips.txt","stop_times.txt","calendar.txt","calendar_dates.txt",
@@ -117,9 +117,8 @@ app.post('/loadFeed/:user', function(req, res) {
         var stream = fs.createReadStream('./public/usrs/'+id+'/feed.zip').pipe(unzip.Extract({ path: './public/usrs/'+id+'/feed/' }));
         stream.on('error',function(err){
           console.log("Test error ")
-          res.end("error response from stream");
+          res.end("Stream Error: ");
         });
-        
         stream.on('close', function(err){
           const Folder = './public/usrs/'+id+'/feed/';
           console.log("loaded files: ");
@@ -134,6 +133,7 @@ app.post('/loadFeed/:user', function(req, res) {
           });
           res.end('File is loaded');
         });
+        
     }
     else{
       res.end("Error in file path");
