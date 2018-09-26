@@ -13,7 +13,7 @@ class Reports extends React.Component {
         "https://public.tableau.com/views/rvtd_demo/table";
 
     const options = {
-        hideTabs: true,
+        hideTabs: false,
         width: "83vw",
         height: "90vh",
         hideToolbar: true,

@@ -226,9 +226,15 @@ function getFilesLoaded(){
         dataType: "json",
         data:{},
         success : function (data) {
-            console.log(data.fileNames);
-            myFeedFiles = data.fileNames;
-            updateFileStatus(data.fileNames);
+            if(data!==null){
+                console.log(data.fileNames);
+                myFeedFiles = data.fileNames;
+                updateFileStatus(data.fileNames);
+            }
+            else{
+                console.log("no files loaded");
+            }
+            
         }
     });
 }
