@@ -15,6 +15,8 @@ var fileNames = ["agency.txt","stops.txt","routes.txt","trips.txt","stop_times.t
 "fare_attributes.txt","shapes.txt","fare_rules.txt","transfers.txt","frequencies.txt","feed_info.txt","board_alight.txt",
 "trip_capacity.txt","ride_feed_info.txt","ridertrip.txt","ridership.txt"];
 
+var agencyColumns = ["agency_id","agency_name","agency_url","agency_timezone","agency_lang","agency_phone","agency_fare_url","agency_email"];
+
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -87,11 +89,8 @@ app.post('/saveFile/:user/:file/',function(req,res){
 });
 
 app.post('/loadFeed/:user', function(req, res) {
-  var id = req.params.user;
-  console.log("user: ",id);
-  console.log("loadingFile");
   var upload = multer({
-		storage: multer.diskStorage({
+    storage: multer.diskStorage({
       destination: function(req, file, callback) {
         console.log("destination: ./public/usrs/"+id+"/")
         callback(null, './public/usrs/'+id+'/')
@@ -100,31 +99,56 @@ app.post('/loadFeed/:user', function(req, res) {
         callback(null, "feed.zip")
       }
     }),
-		fileFilter: function(req, file, callback) {
-			var ext = path.extname(file.originalname)
-			if (ext !== '.zip') {
-				return callback(res.end('Only .zip are allowed'), null)
-			}
-			callback(null, true)
-		}
-	}).single('sampleFile');
-	upload(req, res, function(err) {
-    var stream = fs.createReadStream('./public/usrs/'+id+'/feed.zip').pipe(unzip.Extract({ path: './public/usrs/'+id+'/feed/' }));
-    stream.on('close', function(err){
-      const Folder = './public/usrs/'+id+'/feed/';
-      console.log("loaded files: ");
-      fs.readdirSync(Folder).forEach(file => {
-        if (fileNames.indexOf(file) > -1) {
-          console.log(file);
-      } else {
-          console.log("deleting " +file);
-          fs.unlinkSync('./public/usrs/'+id+'/feed/'+file)
+    fileFilter: function(req, file, callback) {
+      var ext = path.extname(file.originalname)
+      if (ext !== '.zip') {
+        return callback(res.end('Only .zip are allowed'), null)
       }
-      });
-      res.end('File is loaded');
+      callback(null, true)
+    }
+  }).single('sampleFile');
+
+    var id = req.params.user;
+    console.log("user: ",id);
+    console.log("loadingFile");
+
+    upload(req, res, function(err) {
+      if (fs.existsSync('./public/usrs/'+id+'/feed.zip')) {
+        var stream = fs.createReadStream('./public/usrs/'+id+'/feed.zip').pipe(unzip.Extract({ path: './public/usrs/'+id+'/feed/' }));
+        stream.on('error',function(err){
+          console.log("Test error ")
+          res.end("error response from stream");
+        });
+        
+        stream.on('close', function(err){
+          const Folder = './public/usrs/'+id+'/feed/';
+          console.log("loaded files: ");
+          fs.readdirSync(Folder).forEach(file => {
+            if (fileNames.indexOf(file) > -1) {
+              console.log(file);
+              cleanColumns(file,id);
+          } else {
+              console.log("deleting " +file);
+              fs.unlinkSync('./public/usrs/'+id+'/feed/'+file)
+          }
+          });
+          res.end('File is loaded');
+        });
+    }
+    else{
+      res.end("Error in file path");
+    }
+      
     });
-  });
 });
+
+function cleanColumns(file,id){
+  console.log("Cleaning "+file+" columns with ID "+id);
+  first('./public/usrs/'+id+'/feed/'+file)
+      .then(val => {
+        console.log(val);
+      });
+};
 
 app.post('/loadRideFile/:user/:file', function(req, res) {
   var id = req.params.user;
@@ -153,6 +177,7 @@ app.post('/loadRideFile/:user/:file', function(req, res) {
 			callback(null, true)
 		}
   }).single('sampleFile2');
+
   upload(req, res, function(err) {
       if(err){
         res.end(err);
@@ -170,10 +195,17 @@ app.get('/getLoadedFiles/:user', function(req, res) {
   console.log("user: ",id);
   console.log("gettingUploadedfiles");
   const Folder = './public/usrs/'+id+'/feed/';
-  var files = fs.readdirSync(Folder);
-  console.log(files);
-  var data = {fileNames : files};
-  res.json(data);
+  if (fs.existsSync(Folder)){
+    var files = fs.readdirSync(Folder);
+    console.log(files);
+    var data = {fileNames : files};
+    res.json(data);
+  }
+  else{
+    console.log("File path does not exist in getloaded files");
+    res.json(null);
+  }
+  
 });
 
 app.post('/getHistoryTableData',function(req,res){
