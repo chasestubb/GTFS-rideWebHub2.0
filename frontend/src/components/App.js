@@ -79,7 +79,7 @@ class App extends Component {
           <div className="logos">
             <img src={OSUlogo} className="OSU-logo" alt="OSUlogo" />
           </div>
-          <a href="http://localhost:3000/"><img src={icon} className="ride-logo" alt="ridelogo" /></a>
+          <a href="http://34.215.42.206:3000/"><img src={icon} className="ride-logo" alt="ridelogo" /></a>
           <div className="App-title">WebHub</div>
         </header>
         <div className="AllContent">

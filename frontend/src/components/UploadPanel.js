@@ -36,13 +36,13 @@ class Upload extends React.Component {
         });
       }
       else{
-        var url = '/checkUser/'+this.state.username+'/password/'+this.state.password+'/';
+        var url = 'http://34.215.42.206:8080/checkUser/'+this.state.username+'/password/'+this.state.password+'/';
         fetch(url)
         .then(res => res.json())
         .then((mycount) => {
           if(mycount.valid === true){
             //alert("received true")
-            window.open("http://localhost:8080/?User="+this.state.username+"#/",'_self');
+            window.open("http://34.215.42.206:8080/?User="+this.state.username+"#/",'_self');
           }
           else{
             //alert("received false")
