@@ -154,7 +154,12 @@ app.post('/loadFeed/:user', function(req, res) {
 
 function cleanColumns(file,id){
   console.log("Cleaning "+file+" columns with ID "+id);
-  first('./public/usrs/'+id+'/feed/'+file)
+  var Folder = './public/usrs/'+id+'/feed/';
+  var dir = getDirectories(Folder);
+  if(dir.length >0){
+    Folder = Folder + dir[0]+'/';
+  }
+  first(Folder+file)
       .then(val => {
         console.log(val);
       });
@@ -394,7 +399,7 @@ function loadFiles(feedNum,feedid,id){
     var done = function(){console.log("done")};
     var err1 = function(err,res){console.log(err,res)};
     var err2 = function(err,res){console.log(err,res)};
-    first('./public/usrs/'+id+'/feed/'+file)
+    first(Folder+file)
       .then(val => {
         console.log("Headers ",val);
         console.log('COPY ' +table+'('+val+') FROM STDIN WITH CSV HEADER')
