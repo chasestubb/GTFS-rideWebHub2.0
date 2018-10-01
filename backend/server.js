@@ -88,6 +88,12 @@ app.post('/saveFile/:user/:file/',function(req,res){
     }
 });
 
+function getDirectories(path) {
+  return fs.readdirSync(path).filter(function (file) {
+    return fs.statSync(path+'/'+file).isDirectory();
+  });
+}
+
 app.post('/loadFeed/:user', function(req, res) {
   var upload = multer({
     storage: multer.diskStorage({
@@ -120,7 +126,11 @@ app.post('/loadFeed/:user', function(req, res) {
           res.end("Stream Error: ");
         });
         stream.on('close', function(err){
-          const Folder = './public/usrs/'+id+'/feed/';
+          var Folder = './public/usrs/'+id+'/feed/';
+          var dir = getDirectories(Folder);
+          if(dir.length >0){
+            Folder = Folder + dir[0]+'/';
+          }
           console.log("loaded files: ");
           fs.readdirSync(Folder).forEach(file => {
             if (fileNames.indexOf(file) > -1) {
@@ -128,7 +138,7 @@ app.post('/loadFeed/:user', function(req, res) {
               cleanColumns(file,id);
           } else {
               console.log("deleting " +file);
-              fs.unlinkSync('./public/usrs/'+id+'/feed/'+file)
+              fs.unlinkSync(Folder+file)
           }
           });
           res.end('File is loaded');
@@ -194,7 +204,11 @@ app.get('/getLoadedFiles/:user', function(req, res) {
   var id = req.params.user;
   console.log("user: ",id);
   console.log("gettingUploadedfiles");
-  const Folder = './public/usrs/'+id+'/feed/';
+  var Folder = './public/usrs/'+id+'/feed/';
+  var dir = getDirectories(Folder);
+  if(dir.length >0){
+    Folder = Folder + dir[0]+'/';
+  }
   if (fs.existsSync(Folder)){
     var files = fs.readdirSync(Folder);
     console.log(files);
@@ -248,7 +262,11 @@ app.post('/getHistoryTableData',function(req,res){
 app.post('/deleteFiles/:user',function(req,res){
   console.log("deleting files");
   var id = req.params.user;
-  const Folder = './public/usrs/'+id+'/feed';
+  var Folder = './public/usrs/'+id+'/feed/';
+  var dir = getDirectories(Folder);
+  if(dir.length >0){
+    Folder = Folder + dir[0]+'/';
+  }
   rimraf(Folder, function () { 
     console.log('done'); 
     const fileP = './public/usrs/'+id+'/feed.zip';
@@ -364,7 +382,11 @@ function loadFiles(feedNum,feedid,id){
     port: 5432,
   });
   client.connect();
-  const Folder = './public/usrs/'+id+'/feed/';
+  var Folder = './public/usrs/'+id+'/feed/';
+  var dir = getDirectories(Folder);
+  if(dir.length >0){
+    Folder = Folder + dir[0]+'/';
+  }
   var itemsProcessed = 0;
   fs.readdirSync(Folder).forEach((file, index, array) => {
     var table = getTable(file);
