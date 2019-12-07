@@ -1,4 +1,4 @@
-# GTFS-rideWebHub2.0
-Webtools for the management of GTFS-ride data
+# GTFS-ride Tools Development
+Web-based tools for the management of GTFS-ride data.
 
-[Live Site](http://webhub.gtfs-ride.org/)
+[Live Site](http://gtfs-ride.org/)
