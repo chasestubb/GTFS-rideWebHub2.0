@@ -1,4 +1,4 @@
 # OLD - GTFS-ride Tools Development
-Web-based tools for the management of GTFS-ride data.
+Private repo for the GTFS-ride OSU team making sense of what came before us.
 
 [Live Site](http://gtfs-ride.org/)
